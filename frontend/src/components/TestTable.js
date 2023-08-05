@@ -25,13 +25,11 @@ function ProductTable() {
   const [name, setCustomerName] = useState('')
   const [phone, setPhoneNumber] = useState('')
   const [preparedBy, setPreparedBy]= useState('')
-  const [vat, setVat] = useState(5);
-  const [file, setFile] = useState('')
-  const [source, setSource] = useState("")
+  const [vat, setVat] = useState(0);
 
 
   const handleAddRow=()=> {
-    setProducts([...products, {name:"", price: 0, quantity: 0, arrangement:"", file:""}]);
+    setProducts([...products, {name:"", price: 0, quantity: 0, arrangement:""}]);
   }
 
   const handleReset=()=> {
@@ -64,16 +62,16 @@ function ProductTable() {
   };
 
   
-  const handleFileChange=(event, index)=> {
+  /* const handleFileChange=(event, index)=> {
     const newProducts = [...products];
     newProducts[index].file = event.target.value
     setFile(newProducts)
     console.log(newProducts)
-  }
+  } */
   const calculateSubtotal = () => {
     return products.reduce((accumulator, product) => accumulator + (product.price * product.quantity), 0);
   };
-
+/* 
   const handelCapture =(target)=> {
     if(target.files){
       if(target.files.target !== 0){
@@ -83,7 +81,7 @@ function ProductTable() {
       }
     }
   }
-
+ */
 
   const calculateTotal = () => {
     const subtotal = calculateSubtotal();
@@ -98,6 +96,7 @@ const selectFields =[name, phone, service, paidBy, preparedBy];
 const submitProducts = [...products]
 const hasEmptyValues = selectFields.some((value)=> value === '')
 const hasNullValues = submitProducts.some(row => Object.values(row).some(value => value === ''))
+
 if(hasEmptyValues ){
   toast.error('Check Sale Fields for empty data')
   return
@@ -130,7 +129,7 @@ const data ={
         products: products.map((product)=> ({
             quantity: product.quantity,
             description: product.arrangement,
-            "tax-rate": 5,
+            "tax-rate": 0,
             price: product.price,
 
         })),
@@ -160,7 +159,7 @@ const data ={
         const {result} = await axios.post('/api/multiple/new-sale', {
           products, paidBy, service,
           name, phone, preparedBy, total,
-          time, invoiceNumber, subTotal, file
+          time, invoiceNumber, subTotal,
         },
         console.log(products, paidBy, service,
           name, phone, preparedBy, subTotal,
@@ -243,7 +242,6 @@ const data ={
             <th>Arrangement</th>
             <th>Price</th>
             <th>Quantity</th>
-            <th>Photo</th>
             <th>Subtotal</th>
           </tr>
         </thead>
@@ -285,7 +283,7 @@ const data ={
                   onChange={(event) => handleQuantityChange(index, event)}
                 />
               </td>
-              <td>
+    {/*           <td>
                 <div className='d-flex'>
                 <Form.Control
                 type='file'
@@ -305,7 +303,7 @@ const data ={
                 </span>
                 </div>
              
-              </td>
+              </td> */}
               <td>{product.price && product.quantity ? product.price * product.quantity : 0}</td>
             </tr>
           ))}

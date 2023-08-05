@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 
 const unitSchema = new mongoose.Schema({
-    arrangement: {type: String, required: true},
+    arrangement: {type: String, required: false},
+    images: [{type: String}],
     products:[{
-        product: {type: String, required: true},
+        product: {type: mongoose.Schema.Types.ObjectId, ref: 'Product'},
+        name: {type: String, required: false},
         quantity: {type: Number, required: true}
     }]
 },
