@@ -151,38 +151,7 @@ const handleNewTable = () => {
   setTotalValue(0);
 };
 //send updated data to backend
-/* const handleSave= async()=> {
-  if(unitName === ''){
-    toast.error('Please Add arrangemet')
-    return
-  }
-  const hasNullValues = selectedProducts.some(row => Object.values(row).some(value => value === ''))
-  if(hasNullValues){
-    toast.error('cant record empty fields')
-    return
-  } 
 
-  const hasInvalidProducts = selectedProducts.some((row) => {
-    return !row.product || !row.quantity || isNaN(row.quantity);
-  });
-
-  if (hasInvalidProducts) {
-    toast.error('Invalid product data');
-    return;
-  }
-
-
- 
-  try{
-    const {data} = await axios.post(`/api/multiple/${saleId}/add-units`, {
-      selectedProducts, unitName, images
-     }) 
-     toast.success('unit added successfully')
-   }catch(error){
-    toast.error(getError(error))
-    console.log(selectedProducts, unitName, images)
-   }
-  } */
   const handleSave = async () => {
     if (unitName === '') {
       toast.error('Please Add arrangement');
@@ -217,11 +186,10 @@ const handleNewTable = () => {
       });
   
       toast.success('unit added successfully');
-      console.log(selectedProducts, unitName, images);
     } catch (error) {
       toast.error(getError(error));
+      console.log(selectedProducts, unitName, images);
     }
-    
   };
   
   

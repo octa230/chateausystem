@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container';
 import axios from 'axios'
-import {getError} from '../utils/getError'
+import { getError } from '../utils/getError';
 import easyinvoice from 'easyinvoice'
 import {toast} from 'react-toastify'
 import {BsBoxArrowDown, BsPlusSquare, BsFillTrash3Fill} from 'react-icons/bs'
