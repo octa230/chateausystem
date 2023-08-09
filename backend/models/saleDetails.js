@@ -3,18 +3,18 @@ const mongoose = require('mongoose');
 const unitSchema = new mongoose.Schema({
     arrangement: {type: String, required: false},
     images: [{type: String}],
-    products:[{
+    products: [{
         product: {type: mongoose.Schema.Types.ObjectId, ref: 'Product'},
         name: {type: String, required: false},
         quantity: {type: Number, required: true}
-    }]
+    }],
 },
 {
     timestamps: true
 }
 )
 
-const MultipleRetailSchema = new mongoose.Schema({
+const SaleDetailSchema = new mongoose.Schema({
     InvoiceCode: {type: String, required: true},
     saleItems:[{
         productName: {type: String, required: true},
@@ -31,12 +31,11 @@ const MultipleRetailSchema = new mongoose.Schema({
     phone: {type: String, required: true},
     preparedBy: {type: String, requred: true},
     service: {type: String, required: true},
-    units: [unitSchema],
+    units:[unitSchema],
 },
 {
     timestamps: true
-}
-)
+})
 
-const MultipleSale = mongoose.model('MultipleSale', MultipleRetailSchema)
-module.exports = MultipleSale
+const SaleDetails = mongoose.model('SaleDetails', SaleDetailSchema)
+module.exports = SaleDetails

@@ -1,9 +1,10 @@
-const MultipleSale = require('../models/MultipleRetail');
+const SaleDetails = require('../models/saleDetails');
 const asyncHandler = require('express-async-handler');
 const Product = require('../models/product');
+const upload = require('../utils/upload')
 
 const makeSale = asyncHandler(async(req, res)=> {
-        const newSale = new MultipleSale({
+        const newSale = new SaleDetails({
             saleItems: req.body.products.map((x)=> ({
                 ...x,
                 quantity: x.quantity,
@@ -32,25 +33,18 @@ const makeSale = asyncHandler(async(req, res)=> {
 const PAGE_SIZE = 30
 
 const getSales = asyncHandler(async(req, res)=> {
-    const {query} = req;
-    const page = query.page || 1;
-    const pageSize = query.pageSize || PAGE_SIZE
 
-    const sales = await MultipleSale.find().sort({createdAt: -1})   
-        .skip(pageSize * ( page - 1))
-        .limit(pageSize)
-
-    const countSales = await MultipleSale.countDocuments();
+    const sales = await SaleDetails.find()   
+    const countSales = await SaleDetails.countDocuments();
     res.send({
-        sales, page,
+        sales,
         countSales,
-        Pages: Math.ceil(countSales / pageSize)
     })
 })
 
 const getsingleSale = asyncHandler(async(req, res)=> {
     const saleId = req.params.id
-    const sale = await MultipleSale.findById(saleId)
+    const sale = await SaleDetails.findById(saleId)
     if(sale){
         res.send(sale)
     }else{
@@ -75,7 +69,10 @@ const getsingleSale = asyncHandler(async(req, res)=> {
 
 
     sale.units.push({arrangement, ...newProducts})
-})) */
+}))
+ */
+
+
 
 
 const addSaleUnits =  asyncHandler(async(req, res)=> {
@@ -90,7 +87,7 @@ const addSaleUnits =  asyncHandler(async(req, res)=> {
     } 
     try{
     
-    const sale = await MultipleSale.findById(saleId)
+    const sale = await SaleDetails.findById(saleId)
     if (!selectedProducts || !Array.isArray(selectedProducts) || selectedProducts.length === 0) {
         return res.status(400).json({ error: 'No products or quantities submitted' });
     }
@@ -115,7 +112,6 @@ const addSaleUnits =  asyncHandler(async(req, res)=> {
         products: selectedProducts.map((x)=> ({
         ...x,
         product: x.product,
-        name: x.name,
         quantity: x.quantity,
     }))})
     
@@ -129,6 +125,5 @@ const addSaleUnits =  asyncHandler(async(req, res)=> {
 
 
 })
-
 
 module.exports = {getSales, getsingleSale, addSaleUnits, makeSale}
