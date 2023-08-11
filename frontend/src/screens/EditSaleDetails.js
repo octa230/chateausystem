@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer, useContext} from 'react'
+import React, { useEffect, useState, useReducer} from 'react'
 import {useParams} from 'react-router-dom'
 import { Card, Container, Form, Stack, Table, Button, Col } from 'react-bootstrap'
 import {FaPlusCircle, FaRedo} from 'react-icons/fa'
@@ -6,7 +6,6 @@ import axios from 'axios'
 import {toast} from 'react-toastify'
 import {getError} from '../utils/getError'
 import Dropzone from 'react-dropzone'
-import { Store } from '../utils/Store'
 import {BsFillCameraFill} from 'react-icons/bs'
 
 
@@ -58,8 +57,6 @@ const [{ loading, error, sale, products}, dispatch] =
       loading: true,
       error: '',
     });
-    const {state} = useContext(Store)
-    const {userInfoToken} = state
 
 useEffect(()=> {
   const fetchData = async()=> { 
@@ -179,10 +176,6 @@ const handleNewTable = () => {
   
       await axios.post(`/api/multiple/${saleId}/add-units`, {
         selectedProducts, unitName
-      },{
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
       });
   
       toast.success('unit added successfully');

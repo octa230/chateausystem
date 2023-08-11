@@ -78,7 +78,6 @@ const getsingleSale = asyncHandler(async(req, res)=> {
 const addSaleUnits =  asyncHandler(async(req, res)=> {
     const saleId = req.params.id
     const {selectedProducts, unitName} = req.body
-    const images = req.files.map((file)=> file.filename)
 
 
     if(!saleId){
@@ -108,7 +107,7 @@ const addSaleUnits =  asyncHandler(async(req, res)=> {
         await product.save()
     }
     sale.units.push(
-        {arrangement: unitName, images: images,
+        {arrangement: unitName,
         products: selectedProducts.map((x)=> ({
         ...x,
         product: x.product,
