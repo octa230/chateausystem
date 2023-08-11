@@ -2,21 +2,19 @@ import React, {useEffect, useReducer, useState} from 'react'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Alert from 'react-bootstrap/Alert'
-import Container from 'react-bootstrap/Container'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Row from 'react-bootstrap/Row'
 import Form from 'react-bootstrap/Form'
 import axios from 'axios'
 import { getError } from '../utils/getError'
 import { toast } from 'react-toastify'
-import { useLocation} from 'react-router'
 import { Link } from 'react-router-dom'
 
 
 function reducer(state, action){
     switch(action.type){
         case 'FETCH_REQUEST':
-            return{...state, loading: true}
+            return{...state, loading: false}
         case 'FETCH_SUCCESS':
             return{
                 ...state, 
@@ -27,21 +25,15 @@ function reducer(state, action){
             }
         case 'FETCH_FAIL':
             return{...state, loading: false, error: action.payload}
-        case 'INVOICE_REQUEST':
-            return{...state, loading: true}
-        case 'INVOICE_SUCCESS':
-            return{...state, loading: false}
-        case 'INVOICE_FAIL':
-            return{...state, loading: false}
         default:
             return state
     }
 }
 
-export default function SaleHistoryScreen() {
+export default function SaleHistory() {
 
-
-    const [{sales, pages}, dispatch] = useReducer(reducer, {
+    
+    const [{sales}, dispatch] = useReducer(reducer, {
         loading: true,
         error: '',
         sales: []
@@ -51,22 +43,18 @@ export default function SaleHistoryScreen() {
     const [searchPhone, setSearchphone] = useState('')
     const [selectedSale, setSelectedSale] = useState()
 
-    const {search} = useLocation()
-    const sp = new URLSearchParams(search);
-    const page = sp.get('page') || 1
-
     useEffect(()=> {
         const fetchData =async()=> {
             try{
-                const {data} = await axios.get(`/api/multiple/list?page=${page}`)
-                dispatch({type: 'FETCH_SUCCESS', payload: data})      
+                const {data} = await axios.get(`/api/multiple/list`)
+                dispatch({type: 'FETCH_SUCCESS', payload: data}) 
             }catch(error){
                 dispatch({type: 'FETCH_FAIL', payload: error})
                 toast.error(getError(error))
             }
         }
         fetchData()
-    }, [page])
+    },[])
 
     
     function handleSearch(setState){
@@ -77,8 +65,8 @@ export default function SaleHistoryScreen() {
       }
 
   
-    const filteredSale = sales.filter((x)=> x.InvoiceCode.toLowerCase().includes(searchCode.toLocaleLowerCase()))
-    const filteredPhone = sales.filter((x)=> x.phone.toLowerCase().includes(searchPhone.toLocaleLowerCase()))
+    const filteredSale = sales?.filter((x)=> x.InvoiceCode.toLowerCase().includes(searchCode.toLocaleLowerCase()))
+    const filteredPhone = sales?.filter((x)=> x.phone.toLowerCase().includes(searchPhone.toLocaleLowerCase()))
    
     //const filteredName = sales.filter((x)=> x.name.toLowerCase().includes(searchPrice.toLocaleLowerCase()))
     //const filteredPrice = searchPrice
@@ -93,7 +81,6 @@ export default function SaleHistoryScreen() {
     }
 
   return (
-    <Container fluid>
 
         <Row className='p-4'>
             <Col>
@@ -110,12 +97,11 @@ export default function SaleHistoryScreen() {
                 ) : (
 
                 <ListGroup className='pt-2'>
-                    {filteredSale.map((sale)=> (
+                    {filteredSale?.map((sale)=> (
                          <ListGroup.Item key={sale._id} className='d-flex justify-content-between'>
                          <Link to={`/edit-sale/${sale._id}`}>
                             {sale.InvoiceCode}
                          </Link>
-                            Date: {sale.date}
                          <span>
                             <button onClick={()=>handleViewSale(sale._id)}>view</button>
                          </span>
@@ -222,17 +208,5 @@ export default function SaleHistoryScreen() {
             </Card>
             </Col>
         </Row>
-      
-    <div>
-        {[...Array(pages).keys()].map((x)=>(
-            <Link key={x+ 1} 
-            to={`/api/multiple/list?page=${x + 1}`}
-            className={x + 1 === Number(page) ? 'btn text-bold': 'btn'}
-            >
-            {x + 1}
-            </Link>
-        ))}
-    </div>
-    </Container>
   )
 }

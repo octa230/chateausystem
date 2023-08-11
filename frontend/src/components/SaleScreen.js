@@ -1,13 +1,12 @@
 import React, {useContext, useReducer, useState} from 'react'
 import {Container, Row, Col, ListGroup, Button, Card, Form,} from 'react-bootstrap'
-import AddProduct from '../components/AddProduct'
 import { Store } from '../utils/Store'
 import { getError } from '../utils/getError'
 import {BsDashSquareFill, BsFillPlusSquareFill, BsXSquareFill, BsTrash3Fill} from 'react-icons/bs'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import easyinvoice from 'easyinvoice'
-import ProductTable from '../components/TestTable'
+import ProductTable from './TestTable'
 
 
 
@@ -180,17 +179,7 @@ export default function SaleScreen() {
   return (
     <Container>
       <Row>
-      <Col sm={12} md={12} className='border'>
-          <h2>Add Sale</h2>
-        <ProductTable />
-        </Col>
-      </Row>
-      <Row>
-        <Col sm={12} md={4} className='border p-3'>
-          <AddProduct />
-          
-        </Col>
-        <Col sm={12} md={8} className='border'>
+        <Col sm={12} className='border'>
         <div className='d-flex justify-content-between'>
         <h2 className='my-2 p-2 border' style={{color:"red"}}>Recorded units</h2>
         <span className='p-2' onClick={()=> deleteAllItems()}>clear all units {' '} <BsTrash3Fill/></span>

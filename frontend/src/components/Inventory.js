@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useReducer, useContext} from 'react'
 import Axios from 'axios'
-import { Button, Container, Table, Form } from 'react-bootstrap'
-import {BsFillPencilFill, BsCheck2Circle, BsXCircle, BsPlusSquareFill, BsFillFileBreakFill} from 'react-icons/bs'
+import { Button, Table, Form } from 'react-bootstrap'
+import {BsFillPencilFill, BsCheck2Circle, BsXCircle, BsFillFileBreakFill} from 'react-icons/bs'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { getError } from '../utils/getError'
@@ -124,7 +124,7 @@ export default function InventoryScreen() {
 
 
   return (
-   <Container fluid>
+    <>
     <div>
         <Form.Control className='p-2 my-2 w-100'
             type="text"
@@ -132,7 +132,7 @@ export default function InventoryScreen() {
             value={searchName}
             onChange={handleSearch}
         />
-    <Table striped bordered hover className='my-2 w-100' responsive>
+    <Table striped bordered hover className='w-100' responsive>
         <thead>
             <tr>
                 <th>ID</th>
@@ -142,11 +142,6 @@ export default function InventoryScreen() {
                 <th>Stock</th>
                 <th className='d-flex justify-content-between'>
                     Actions
-                    <span>
-                        <Button href='/dashboard' variant=''>
-                           Add product <BsPlusSquareFill/>
-                        </Button>
-                    </span>
                     <span>
                         <Button variant='' onClick={()=> navigate('/print-inventory')}>
                             Print <BsFillFileBreakFill />
@@ -220,6 +215,6 @@ export default function InventoryScreen() {
             </Link>
         ))}
     </div>
-   </Container>
-  )
+</>
+)
 }
