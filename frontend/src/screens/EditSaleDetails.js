@@ -166,23 +166,9 @@ const handleNewTable = () => {
       toast.error('Invalid product data');
       return;
     }
-  
-    try {
-      const formData = new FormData();
-      formData.append('unitName', unitName);
-      formData.append('selectedProducts', selectedProducts);
-  
-      for (const img of images) {
-        formData.append('images', img);
-      }
-      
-  
+      try{
       await axios.post(`/api/multiple/${saleId}/add-units`, {
         selectedProducts, unitName
-      },{
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
       });
   
       toast.success('unit added successfully');

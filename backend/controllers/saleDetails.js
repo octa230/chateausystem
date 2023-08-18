@@ -78,8 +78,6 @@ const getsingleSale = asyncHandler(async(req, res)=> {
 const addSaleUnits =  asyncHandler(async(req, res)=> {
     const saleId = req.params.id
     const {selectedProducts, unitName} = req.body
-    const images = req.files.map((file)=> file.filename)
-
 
     if(!saleId){
         res.status(404).send('no sale found');
@@ -88,7 +86,7 @@ const addSaleUnits =  asyncHandler(async(req, res)=> {
     try{
     
     const sale = await SaleDetails.findById(saleId)
-    if (!selectedProducts || !Array.isArray(selectedProducts) || selectedProducts.length === 0) {
+    if (!selectedProducts || selectedProducts.length === 0) {
         return res.status(400).json({ error: 'No products or quantities submitted' });
     }
     if(!sale){
@@ -101,14 +99,14 @@ const addSaleUnits =  asyncHandler(async(req, res)=> {
             return
         }
         if(product.inStock < selectedProduct.quantity){
-            res.status(400).send('insufficient stock')
+            res.status(400).send({message: 'insufficient stock'})
             return
         }
         product.inStock -= selectedProduct.quantity
         await product.save()
     }
     sale.units.push(
-        {arrangement: unitName, images: images,
+        {arrangement: unitName,
         products: selectedProducts.map((x)=> ({
         ...x,
         product: x.product,
